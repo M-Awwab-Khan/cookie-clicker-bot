@@ -10,16 +10,19 @@ driver = webdriver.Chrome(options=chrome_options)
 driver.get('http://orteil.dashnet.org/experiments/cookie/')
 
 cookie = driver.find_element(By.ID, 'cookie')
-money = driver.find_element(By.ID, 'money')
-# timeout = time.time() + 60*5
+timeout = time.time() + 5
 store = driver.find_element(By.ID, 'store')
-prices = [int(price.split('-')[1].strip()) for price in store.find_elements(By.TAG_NAME, 'b')]
-perks = [perk for perk in store.find_elements(By.TAG_NAME, 'div')]
+prices = [int(price.text.split(' - ')[1].replace(',', '')) for price in store.find_elements(By.TAG_NAME, 'b')[:-1]]
+prices.reverse()
+perks = [perk for perk in store.find_elements(By.TAG_NAME, 'div')[:-1]]
+perks.reverse()
 prices_perks = zip(prices, perks)
 
-# while True:
-#     if time.time() > timeout:
-
-#     cookie.click()
-
-
+while True:
+    if time.time() > timeout:
+        for price, perk in prices_perks:
+            if int(driver.find_element(By.ID, 'money').text) > price:
+                perk.click()
+                timeout = time.time() + 5
+                break
+    cookie.click()
