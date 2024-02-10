@@ -11,7 +11,7 @@ driver.get('http://orteil.dashnet.org/experiments/cookie/')
 
 cookie = driver.find_element(By.ID, 'cookie')
 timeout = time.time() + 5
-
+break_timeout = time.time() + 300
 while True:
     if time.time() > timeout:
         store = driver.find_element(By.ID, 'store')
@@ -21,4 +21,6 @@ while True:
                 perk.click()
                 timeout = time.time() + 5
                 break
+    if time.time() > break_timeout:
+        break
     cookie.click()
