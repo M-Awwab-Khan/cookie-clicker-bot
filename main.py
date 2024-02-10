@@ -22,5 +22,6 @@ while True:
                 timeout = time.time() + 5
                 break
     if time.time() > break_timeout:
+        print(driver.find_element(By.ID, 'cps').text)
         break
     cookie.click()
